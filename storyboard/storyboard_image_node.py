@@ -10,6 +10,7 @@ from griptape_nodes.exe_types.core_types import Parameter, ParameterMode, Parame
 from griptape.artifacts import ImageArtifact, ImageUrlArtifact
 from griptape_nodes.exe_types.node_types import BaseNode
 from griptape_nodes.retained_mode.griptape_nodes import GriptapeNodes
+from griptape_nodes.retained_mode.events.os_events import ExistingFilePolicy
 from griptape_nodes.traits.options import Options
 
 
@@ -179,7 +180,7 @@ class StoryboardImageNode(DataNode):
             
             # Save image using StaticFilesManager and get URL
             static_files_manager = GriptapeNodes.StaticFilesManager()
-            static_url = static_files_manager.save_static_file(buffer.getvalue(), filename)
+            static_url = static_files_manager.save_static_file(buffer.getvalue(), filename, ExistingFilePolicy.CREATE_NEW)
             
             # Create ImageUrlArtifact with the URL
             image_url_artifact = ImageUrlArtifact(value=static_url, name=f"storyboard_{timestamp}")

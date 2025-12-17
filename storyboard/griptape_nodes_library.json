@@ -4,8 +4,8 @@
   "metadata": {
     "author": "Ian Massingham",
     "description": "Node for creating storyboards",
-    "library_version": "0.1.1",
-    "engine_version": "0.39.0",
+    "library_version": "0.1.2",
+    "engine_version": "0.66.0",
     "tags": [
       "Griptape",
       "AI",

@@ -339,12 +339,21 @@ class StoryboardImageNode(DataNode):
         """Validate the node configuration before running."""
         exceptions = []
         images = self.get_parameter_value("images")
-        
-        if not images or not isinstance(images, list) or len(images) == 0:
-            exceptions.append(ValueError("No images provided or invalid input"))
-            
+
+        # A connected input has no value until its upstream node runs, and process() handles an empty list.
+        if not self._has_incoming_connection("images"):
+            if not images or not isinstance(images, list) or len(images) == 0:
+                exceptions.append(ValueError("No images provided or invalid input"))
+
         return exceptions if exceptions else None
-        
+
+    def _has_incoming_connection(self, parameter_name: str) -> bool:
+        parameter = self.get_parameter_by_name(parameter_name)
+        if parameter is None:
+            return False
+        connections = GriptapeNodes.FlowManager().get_connections()
+        return bool(connections.get_incoming_connections_to_parameter(self, parameter))
+
     def _parse_output_size(self, output_size: str) -> tuple[int, int] | None:
         """Parse the output size parameter into a tuple of width and height."""
         # Define a mapping of options to actual resolutions
